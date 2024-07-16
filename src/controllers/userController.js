@@ -40,7 +40,7 @@ export const userLogin = async (req, res, next) => {
     const { email, password } = req.body;
 
     const user = await userModal.findOne({ email }).select("+password");
-    console.log(user);
+
     if (!user) {
       throw new Error("User not valid!");
     }
@@ -54,7 +54,7 @@ export const userLogin = async (req, res, next) => {
       expiresIn: "1d",
     });
 
-    res.status(201).json({ message: "User created successfully!", token });
+    res.status(200).json({ message: "User login successfully!", token });
   } catch (err) {
     const error = {
       message: err.message,

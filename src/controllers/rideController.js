@@ -11,6 +11,9 @@ export const createRide = async (req, res, next) => {
       passenger,
       distance,
       location,
+      price,
+      cab,
+      tripType,
     } = req.body;
     const userExist = await userModal.findById({ _id: req._id });
 
@@ -32,10 +35,15 @@ export const createRide = async (req, res, next) => {
       throw new Error("Passenger is required");
     } else if (!distance) {
       throw new Error("Distance is required");
+    } else if (!tripType) {
+      throw new Error("Trip type is required");
+    } else if (!cab) {
+      throw new Error("Cab is required");
+    } else if (!price) {
+      throw new Error("Price is required");
     }
 
     const reqData = { ...req.body, user_id: req._id };
-    console.log(reqData);
     const ridedata = await rideModel(reqData);
     const ride = ridedata.save();
     res.status(200).json({ message: "Ride added successfully!", ridedata });
@@ -51,7 +59,6 @@ export const createRide = async (req, res, next) => {
 
 export const getRides = async (req, res, next) => {
   try {
-    console.log(req._id);
     const rides = await rideModel.find({ user_id: req._id });
     res.status(200).json({ message: "Rides fetched successfully!", rides });
   } catch (err) {

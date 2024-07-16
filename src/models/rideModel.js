@@ -37,6 +37,19 @@ const rideSchema = new mongoose.Schema(
       required: [true, "Distance is requie!"],
       trim: true,
     },
+    tripType: {
+      type: String,
+      enum: ["ONE" | "ROUND"],
+      default: "ONE",
+    },
+    cab: {
+      type: String,
+      required: [true, "Cab is requie!"],
+    },
+    price: {
+      type: String,
+      required: [true, "Price is requie!"],
+    },
     location: {
       pickup: {
         address: {
