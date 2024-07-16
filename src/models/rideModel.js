@@ -50,6 +50,9 @@ const rideSchema = new mongoose.Schema(
       type: String,
       required: [true, "Price is requie!"],
     },
+    complete: {
+      type: Date,
+    },
     location: {
       pickup: {
         address: {

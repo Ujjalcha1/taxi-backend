@@ -44,6 +44,9 @@ export const createRide = async (req, res, next) => {
     }
 
     const reqData = { ...req.body, user_id: req._id };
+
+    reqData.complete = new Date(new Date().getTime() + 5 * 60000);
+
     const ridedata = await rideModel(reqData);
     const ride = ridedata.save();
     res.status(200).json({ message: "Ride added successfully!", ridedata });
@@ -59,7 +62,34 @@ export const createRide = async (req, res, next) => {
 
 export const getRides = async (req, res, next) => {
   try {
-    const rides = await rideModel.find({ user_id: req._id });
+    const rides = await rideModel.aggregate([
+      {
+        $match: {
+          complete: { $gt: new Date() },
+          user_id: req._id,
+        },
+      },
+    ]);
+    res.status(200).json({ message: "Rides fetched successfully!", rides });
+  } catch (err) {
+    const error = {
+      status: 400,
+      message: err.message,
+    };
+    next(error);
+  }
+};
+
+export const getRidesHistory = async (req, res, next) => {
+  try {
+    const rides = await rideModel.aggregate([
+      {
+        $match: {
+          complete: { $lt: new Date() },
+          user_id: req._id,
+        },
+      },
+    ]);
     res.status(200).json({ message: "Rides fetched successfully!", rides });
   } catch (err) {
     const error = {
