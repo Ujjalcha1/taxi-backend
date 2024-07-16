@@ -39,7 +39,7 @@ const rideSchema = new mongoose.Schema(
     },
     tripType: {
       type: String,
-      enum: ["ONE" | "ROUND"],
+      enum: ["ONE", "ROUND"],
       default: "ONE",
     },
     cab: {
